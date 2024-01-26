@@ -1,8 +1,9 @@
 import express from "express";
-import { productManager } from "./productManager.js";
+import { productManager } from "./src/manager/productManager.js";
+import {cartRouter} from "./src/router/cartRouter.js"
 const app = express();
 const PORT = 8080;
- //middlewares
+//middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

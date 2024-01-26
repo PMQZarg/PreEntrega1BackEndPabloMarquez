@@ -3,7 +3,7 @@ import fs from "fs/promises";
 class ProductManager {
   constructor() {
     this.products = [];
-    this.path = "./src/products.json";
+    this.path = "./src/data/products.json";
   }
 
   async addProduct(product) {
@@ -85,7 +85,7 @@ class ProductManager {
   deleteProduct(id) {
     this.getProducts();
     if (this.products.find((product) => product.id) === undefined) {
-      console.error(`El id $ {id} no existe`);
+      console.error(`El id ${id} no existe`);
       return;
     }
 
@@ -209,12 +209,12 @@ async function main() {
   let misProductos = await productManager.getProducts();
   console.log(misProductos);
 
-  const pd = productManager.getProductsById(2);
-  console.log(pd);
+/*  const pd = productManager.getProductsById(2);
+  console.log(pd);*/
 
-  await productManager.updateProduct(2, product2);
-  misProductos = await productManager.getProducts();
-  console.log(misProductos);
+  /* await productManager.updateProduct(2, product2);
+   misProductos = await productManager.getProducts();
+   console.log(misProductos);*/
 }
 
 main();
