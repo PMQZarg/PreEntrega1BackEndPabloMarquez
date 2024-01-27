@@ -1,6 +1,6 @@
 import fs from "fs/promises";
 
-class ProductManager {
+export class ProductManager {
   constructor() {
     this.products = [];
     this.path = "./src/data/products.json";
@@ -120,79 +120,7 @@ const product2 = {
   stock: 10,
 };
 
-const product3 = {
-  title: "Producción Musical Integral Dúo",
-  description: "Formato Dúo",
-  price: 40,
-  thumbnail: "miMiniatura",
-  code: "pmqz3",
-  stock: 15,
-};
 
-const product4 = {
-  title: "Transcripción a partitura",
-  description: "Traduzco tu música a partituras, melodía y armonía",
-  price: 10,
-  thumbnail: "miMiniatura",
-  code: "pmqz4",
-  stock: 14,
-};
-
-const product5 = {
-  title: "Curso de piano on demand",
-  description: "Clases grabadas",
-  price: 40,
-  thumbnail: "miMiniatura",
-  code: "pmqz5",
-  stock: 100,
-};
-
-const product6 = {
-  title: "Curso de piano en vivo",
-  description: "Clases online en vivo",
-  price: 65,
-  thumbnail: "miMiniatura",
-  code: "pmqz6",
-  stock: 40,
-};
-
-const product7 = {
-  title: "Réplica Instrumental/Karaoke",
-  description:
-    "Elegí el tema o canción que quieras y no consigas, yo te lo hago a tu medida",
-  price: 60,
-  thumbnail: "miMiniatura",
-  code: "pmqz7",
-  stock: 77,
-};
-
-const product8 = {
-  title: "Consultoría musical para tu proyecto/negocio/servicio",
-  description:
-    "Tu objetivo, te acompaño a armar tu plan para concretarlo, con herramientas de Psicología social y Coaching",
-  price: 20,
-  thumbnail: "miMiniatura",
-  code: "pmqz8",
-  stock: 25,
-};
-
-const product9 = {
-  title: "Curso de Canto On demand",
-  description: "Curso de canto grabado para que hagas a tu tiempo",
-  price: 40,
-  thumbnail: "miMiniatura",
-  code: "pmqz9",
-  stock: 100,
-};
-
-const product10 = {
-  title: "Curso de canto online en vivo",
-  description: "Clases en vivo, grupales o individuales",
-  price: 65,
-  thumbnail: "miMiniatura",
-  code: "pmqz10",
-  stock: 40,
-};
 
 async function main() {
   await productManager.addProduct(product1);
@@ -209,7 +137,7 @@ async function main() {
   let misProductos = await productManager.getProducts();
   console.log(misProductos);
 
-/*  const pd = productManager.getProductsById(2);
+  /*  const pd = productManager.getProductsById(2);
   console.log(pd);*/
 
   /* await productManager.updateProduct(2, product2);
@@ -218,5 +146,3 @@ async function main() {
 }
 
 main();
-
-export { productManager };

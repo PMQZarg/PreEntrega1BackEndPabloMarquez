@@ -1,11 +1,9 @@
 export class CartManager {
+  async getCarts() {}
 
-    async getCarts() {}
-  
-    async createCarts() {}
-  
-    async updateCarts() {}
-  
-    async deleteCarts() {}
-  }
-  
+  async createCarts() {}
+
+  async updateCarts() {}
+
+  async deleteCarts() {}
+}

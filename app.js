@@ -1,12 +1,12 @@
 import express from "express";
-import { productManager } from "./src/manager/productManager.js";
-import {cartRouter} from "./src/router/cartRouter.js"
+import Index from "./src/router/indexRouter.js";
+
 const app = express();
 const PORT = 8080;
 //middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use("/api", Index);
 //Endpoint limitando consultas sobre productos
 
 app.get("/products", async (req, res) => {
