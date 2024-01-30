@@ -120,29 +120,12 @@ const product2 = {
   stock: 10,
 };
 
-
-
 async function main() {
   await productManager.addProduct(product1);
   await productManager.addProduct(product2);
-  await productManager.addProduct(product3);
-  await productManager.addProduct(product4);
-  await productManager.addProduct(product5);
-  await productManager.addProduct(product6);
-  await productManager.addProduct(product7);
-  await productManager.addProduct(product8);
-  await productManager.addProduct(product9);
-  await productManager.addProduct(product10);
 
   let misProductos = await productManager.getProducts();
   console.log(misProductos);
-
-  /*  const pd = productManager.getProductsById(2);
-  console.log(pd);*/
-
-  /* await productManager.updateProduct(2, product2);
-   misProductos = await productManager.getProducts();
-   console.log(misProductos);*/
 }
 
 main();
