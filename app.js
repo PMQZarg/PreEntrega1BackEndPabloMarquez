@@ -9,7 +9,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api", Index);
 //Endpoint limitando consultas sobre productos
 
-app.get("/products", async (req, res) => {
+app.get("api/products", async (req, res) => {
   const productos = await productManager.getProducts();
   res.json(productos);
 

@@ -1,10 +1,21 @@
 import { Router } from "express";
-import ProductsManager from "./productsRouter.js";
-import Carts from "./cartRouter.js";
 
 const router = Router();
 
-router.use("/products", Products);
-router.use("/cart", Carts);
+router.get("/products", () => {
+  console.log("comprobación");
+});
+
+router.post("/cart", () => {
+  console.log("comprobación");
+});
+
+router.put("/products", () => {
+  console.log("comprobación");
+});
+
+router.delete("/products", () => {
+  console.log("comprobación");
+});
 
 export default router;
