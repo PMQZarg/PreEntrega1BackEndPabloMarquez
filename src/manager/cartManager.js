@@ -1,5 +1,6 @@
 import fs from "fs";
-import { ProductManager } from "./productManager";
+import { ProductManager } from "./productManager.js";
+
 export class CartManager {
   constructor() {
     this.path = "./src/data/carts.json";
@@ -8,7 +9,7 @@ export class CartManager {
   getCarts() {
     try {
       const data = fs.readFileSync(this.path, "utf8");
-      this.carts = JSON.parse(data);
+      this.carts = JSON.parse(String);
       return this.carts;
     } catch (error) {
       console.error("error al leer el archivo", error);
@@ -16,40 +17,18 @@ export class CartManager {
     }
   }
 
-  addCart() {
+  getCartsById(cartId) {
     this.getCarts();
-    const newCart = {
-      id: this.carts.length + 1,
-      products: [],
-    };
-
-    this.carts.push(newCart);
-
-    try {
-      fs.writeFileSync(this.path, JSON.stringify(this.carts));
-      console.log("carrito guardado exitosamente");
-      return newCart;
-    } catch (error) {
-      console.error("no se guardo el carrito", error);
-    }
+    const cart = this.carts.find((c) => c.id === cid);
+    if (cart === undefined) {
+      console.log(`El producto con el id ${cid} no existe`);
+    } else return cart;
   }
 
-  getCartById(cartId) {
-    this.getCarts();
-    const cart = this.carts.find((cart) => cart.id === cartId);
-    console.log(cart);
-    if (cart) {
-      return cart;
-    } else {
-      console.log("Carrito no encontrado");
-      return null;
-    }
-  }
-
-  addProduct(cartId, productId) {
+  addProduct(cid, productId) {
     try {
       this.getCarts();
-      const cart = this.carts.find((cart) => cart.id === cartId);
+      const cart = this.carts.find((cart) => cart.id === cid);
 
       if (!cart) {
         throw new Error(`No se encontró el carrito con id ${cartId}`);
@@ -82,38 +61,34 @@ export class CartManager {
     }
   }
 
-  deleteProduct(cartId, productId) {
-    try {
-      this.getCarts();
-      const cart = this.carts.find((cart) => cart.id === cartId);
+  deleteCart(cid, productId) {
+    this.getCarts();
+    if (this.carts.find((product) => product.id) === undefined) {
+      console.error(`El id $ {cid} no existe`);
+      return;
+    }
 
-      if (!cart) {
-        throw new Error(`No se encontró el carrito con id ${cartId}`);
-      }
-
-      const productIndex = cart.products.findIndex(
-        (product) => product.id === parseInt(productId)
+    /*const indice = cart.products.findIndex((product) => product.id === id);
+    cart.products.splice(indice, 1);*/
+    if (indice === -1) {
+      throw new Error(
+        `No se encontró el producto con id ${productId} en el carrito con id ${cId}`
       );
+    }
 
-      if (productIndex === -1) {
-        throw new Error(
-          `No se encontró el producto con id ${productId} en el carrito con id ${cartId}`
-        );
-      }
+    const product = cart.products[indice];
 
-      const product = cart.products[productIndex];
+    if (product.quantity > 1) {
+      product.quantity--;
+    } else {
+      cart.products.splice(indice, 1);
+    }
 
-      if (product.quantity > 1) {
-        product.quantity--;
-      } else {
-        cart.products.splice(productIndex, 1);
-      }
-
-      fs.writeFileSync(this.path, JSON.stringify(this.carts));
-      return cart;
+    try {
+      fs.writeFileSync(this.path, JSON.stringify(this.products));
+      console.log("El producto ha sido borrado");
     } catch (error) {
-      console.error("Error al eliminar producto del carrito", error);
-      throw error;
+      console.error("Error borrando el producto", error);
     }
   }
 }
