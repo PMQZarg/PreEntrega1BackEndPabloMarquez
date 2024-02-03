@@ -32,4 +32,4 @@ router.delete("/products/:id", async (req, res) => {
   res.json(product);
 });
 
-export default router;
+export default productRouter;

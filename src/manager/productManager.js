@@ -6,11 +6,31 @@ export class ProductManager {
     this.path = "./src/data/products.json";
   }
 
-  async addProduct(product) {
-    await this.getProducts();
-    const { title, description, price, thumbnail, code, stock } = product;
+  addProduct(product) {
+    this.getProducts();
+    const {
+      title,
+      description,
+      price,
+      thumbnail,
+      code,
+      stock,
+      quantity,
+      status,
+      category,
+    } = product;
 
-    if (!title || !description || !price || !thumbnail || !code || !stock) {
+    if (
+      title === "" ||
+      description === "" ||
+      price === "" ||
+      thumbnail === "" ||
+      code === "" ||
+      stock === "" ||
+      quantity === "" ||
+      status === "" ||
+      category === ""
+    ) {
       console.log("Todos los campos son requeridos");
       return;
     }
@@ -25,16 +45,16 @@ export class ProductManager {
     this.products.push(newProduct);
 
     try {
-      await fs.writeFile(this.path, JSON.stringify(this.products));
+      fs.writeFile(this.path, JSON.stringify(this.products));
       console.log("Datos guardados con éxito");
     } catch (error) {
       console.error("Error escribiendo en el archivo", error);
     }
   }
 
-  async getProducts() {
+  getProducts() {
     try {
-      const data = await fs.readFile(this.path, "utf8");
+      const data = fs.readFile(this.path, "utf8");
       this.products = JSON.parse(data);
       console.log("El archivo se ha leido con éxito");
     } catch (error) {
@@ -63,8 +83,8 @@ export class ProductManager {
     console.log("Mi último Id es", this.lastProductId);
     return lastProductId;
   }
-  async updateProduct(id, productActualizado) {
-    await this.getProducts();
+  updateProduct(id, productActualizado) {
+    this.getProducts();
     const existingProduct = this.products.find((product) => product.id === id);
 
     if (existingProduct === undefined) {
@@ -75,7 +95,7 @@ export class ProductManager {
     this.products[indice] = { id, ...productActualizado };
 
     try {
-      await fs.writeFile(this.path, JSON.stringify(this.products));
+      fs.writeFile(this.path, JSON.stringify(this.products));
       console.log("Archivo actualizado con éxito");
     } catch (error) {
       console.error("No se ha podido actualizar el archivo", error);
@@ -102,30 +122,15 @@ export class ProductManager {
 
 const productManager = new ProductManager();
 
-const product1 = {
-  title: "Producción Musical Integral Full Banda",
-  description: "Formato Full Banda",
-  price: 100,
-  thumbnail: "miMiniatura",
-  code: "pmqz1",
-  stock: 7,
+const newProduct = {
+  id: this.products.length + 1,
+  title: title,
+  description: description,
+  price: price,
+  thumbnail: thumbnail,
+  code: code,
+  stock: stock,
+  quantity: quantity,
+  category: category,
+  status: status,
 };
-
-const product2 = {
-  title: "Producción Musical Integral Acústico",
-  description: "Formato Acústico",
-  price: 60,
-  thumbnail: "miMiniatura",
-  code: "pmqz2",
-  stock: 10,
-};
-
-async function main() {
-  await productManager.addProduct(product1);
-  await productManager.addProduct(product2);
-
-  let misProductos = await productManager.getProducts();
-  console.log(misProductos);
-}
-
-main();

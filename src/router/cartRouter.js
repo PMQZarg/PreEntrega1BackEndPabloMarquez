@@ -1,6 +1,7 @@
 import express from "express";
-const router = express.Router();
 import { cartManager } from "../app.js";
+
+const router = express.Router();
 
 router.get('/cart', async (req, res) => {
   const cart = await cartManager.getCart();
