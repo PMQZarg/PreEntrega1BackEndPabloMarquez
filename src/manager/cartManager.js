@@ -9,7 +9,7 @@ export class CartManager {
   getCarts() {
     try {
       const data = fs.readFileSync(this.path, "utf8");
-      this.carts = JSON.parse(String);
+      this.carts = JSON.parse(data);
       return this.carts;
     } catch (error) {
       console.error("error al leer el archivo", error);

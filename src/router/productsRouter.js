@@ -1,13 +1,35 @@
-import { Router } from "express";
+import express from "express";
+const router = express.Router();
+import { productManager } from "../app.js";
 
-import {ProductManager} from "../manager/productManager.js";
+router.get("/products", async (req, res) => {
+  const products = await productManager.getProducts();
+  res.json(products);
+});
 
-const router = Router();
-const products = new ProductManager();
+router.get("/products/:id", async (req, res) => {
+  const id = req.params.id;
+  const product = await productManager.getProductById(id);
+  res.json(product);
+});
 
-router.get("/", products.getProducts());
-router.post("/", carts.createProducts());
-router.put("/:prodid", carts.updateProducts());
-router.delete("/:prodid", carts.updateProducts());
+router.post("/products", async (req, res) => {
+  const product = req.body;
+  const newProduct = await productManager.createProduct(product);
+  res.json(newProduct);
+});
+
+router.put("/products/:id", async (req, res) => {
+  const id = req.params.id;
+  const product = req.body;
+  const updatedProduct = await productManager.updateProduct(id, product);
+  res.json(updatedProduct);
+});
+
+router.delete("/products/:id", async (req, res) => {
+  const id = req.params.id;
+  const product = await productManager.deleteProduct(id);
+  res.json(product);
+});
 
 export default router;

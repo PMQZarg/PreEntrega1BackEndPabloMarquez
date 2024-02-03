@@ -1,13 +1,29 @@
-import { Router } from "express";
+import express from "express";
+const router = express.Router();
+import { cartManager } from "../app.js";
 
-import { CartManager } from "../manager/cartManager.js";
+router.get('/cart', async (req, res) => {
+  const cart = await cartManager.getCart();
+  res.json(cart);
+});
 
-const router = Router();
-const carts = new CartManager();
+router.post('/cart', async (req, res) => {
+  const product = req.body;
+  const cart = await cartManager.addToCart(product);
+  res.json(cart);
+});
 
-router.get("/", carts.getCarts());
-router.post("/", carts.createCarts());
-router.put("/:cartid", carts.updateCart());
-router.delete("/:cartid", carts.updateCart());
+router.put('/cart/:id', async (req, res) => {
+  const id = req.params.id;
+  const product = req.body;
+  const cart = await cartManager.updateCartItem(id, product);
+  res.json(cart);
+});
+
+router.delete('/cart/:id', async (req, res) => {
+  const id = req.params.id;
+  const cart = await cartManager.deleteCartItem(id);
+  res.json(cart);
+});
 
 export default router;
