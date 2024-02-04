@@ -12,13 +12,13 @@ app.use(express.urlencoded({ extended: true }));
 const pathProducts = "./src/data/products.json";
 const pathCarts = "./src/data/carts.json";
 
-export const productManager = new ProductManager(pathProducts);
-export const cartManager = new CartManager(pathCarts);
-
 app.use("/api", Index);
-app.use("/api/products", productRouter);
-app.use("/api/carts", cartRouter);
+app.use("/api/products/", router);
+app.use("/api/carts/", router);
 
 app.listen(PORT, () => {
   console.log(`El servidor esta corriendo en http://localhost:${PORT}`);
 });
+
+export const productManager = new ProductManager(pathProducts);
+export const cartManager = new CartManager(pathCarts);

@@ -122,15 +122,16 @@ export class ProductManager {
 
 const productManager = new ProductManager();
 
-const newProduct = {
-  id: this.products.length + 1,
-  title: title,
-  description: description,
-  price: price,
-  thumbnail: thumbnail,
-  code: code,
-  stock: stock,
-  quantity: quantity,
-  category: category,
-  status: status,
-};
+  const newProduct = {
+    id: this.products.length +1,
+    title: title,
+    description: description,
+    price: price,
+    thumbnail: thumbnail,
+    code: code,
+    stock: stock,
+    quantity: quantity,
+    category: String,
+    status: Boolean,
+  };
+
