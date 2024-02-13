@@ -1,4 +1,4 @@
-import fs from "fs/promises";
+import fs from "fs";
 
 export class ProductManager {
   constructor() {
@@ -54,7 +54,7 @@ export class ProductManager {
 
   getProducts() {
     try {
-      const data = fs.readFile(this.path, "utf8");
+      const data = fs.readFileSync(this.path, "utf8");
       this.products = JSON.parse(data);
       console.log("El archivo se ha leido con éxito");
     } catch (error) {

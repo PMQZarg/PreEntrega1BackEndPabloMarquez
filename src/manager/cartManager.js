@@ -1,5 +1,5 @@
 import fs from "fs";
-import { ProductManager } from "./productManager.js";
+import {productManager} from "../app.js";
 
 export class CartManager {
   constructor() {
@@ -36,7 +36,7 @@ export class CartManager {
         (product) => product.id === parseInt(productId)
       );
       if (!existingProduct) {
-        const product = ProductManager.getProductById(productId);
+        const product = productManager.getProductById(productId);
         if (!product) {
           throw new Error(`No se encontró el producto con id ${productId}`);
         }
@@ -63,7 +63,9 @@ export class CartManager {
     }
     const product = cart.products.find((product) => product.id === productId);
     if (!product) {
-      throw new Error(`No se encontró el producto con id ${productId} en el carrito con id ${cartId}`);
+      throw new Error(
+        `No se encontró el producto con id ${productId} en el carrito con id ${cartId}`
+      );
     }
     if (product.quantity > 1) {
       product.quantity--;
