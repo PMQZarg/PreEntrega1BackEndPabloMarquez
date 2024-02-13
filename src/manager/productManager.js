@@ -6,8 +6,29 @@ export class ProductManager {
     this.path = "./src/data/products.json";
   }
 
-  addProduct(product) {
+  getProducts() {
+    try {
+      const data = fs.readFileSync(this.path, "utf8");
+      this.products = JSON.parse(data);
+      return this.products;
+    } catch (error) {
+      console.error("No se pudo leer el archivo", error);
+      return [];
+    }
+  }
+
+  getProductById(pid) {
     this.getProducts();
+    const productId = this.products.find((product) => product.id === pid);
+
+    if (productId) {
+      return productId;
+    } else {
+      console.error(`No se encontro el producto de ID: ${productId}`);
+    }
+  }
+
+  addProduct(product) {
     const {
       title,
       description,
@@ -15,123 +36,83 @@ export class ProductManager {
       thumbnail,
       code,
       stock,
-      quantity,
-      status,
       category,
+      status,
     } = product;
 
     if (
-      title === "" ||
-      description === "" ||
-      price === "" ||
-      thumbnail === "" ||
-      code === "" ||
-      stock === "" ||
-      quantity === "" ||
-      status === "" ||
-      category === ""
+      !product.title ||
+      !product.description ||
+      !product.price ||
+      !product.thumbnail ||
+      !product.code ||
+      !product.stock ||
+      !product.category ||
+      !product.status
     ) {
-      console.log("Todos los campos son requeridos");
-      return;
+      throw new Error("Todos los campos son obligatorios.");
     }
 
-    if (this.products.some((p) => p.code === code)) {
-      console.log("El codigo del producto ya existe");
-      return;
+    if (this.products.some((prod) => prod.code === code)) {
+      throw new Error("El producto ya existe");
     }
 
-    const id = this.setId();
-    const newProduct = { id, ...product };
+    const newProduct = {
+      id: this.products.length + 1,
+      title: title,
+      description: description,
+      price: price,
+      thumbnail: thumbnail,
+      code: code,
+      stock: stock,
+      category: category,
+      status: status,
+    };
+
     this.products.push(newProduct);
+    console.log("El producto fue agregado con exito");
 
     try {
-      fs.writeFile(this.path, JSON.stringify(this.products));
-      console.log("Datos guardados con éxito");
+      fs.writeFileSync(this.path, JSON.stringify(this.products));
+      console.log("Producto guaradado");
+      return newProduct;
     } catch (error) {
-      console.error("Error escribiendo en el archivo", error);
-    }
-  }
-
-  getProducts() {
-    try {
-      const data = fs.readFileSync(this.path, "utf8");
-      this.products = JSON.parse(data);
-      console.log("El archivo se ha leido con éxito");
-    } catch (error) {
-      console.log("Error leyendo el archivo", error);
-    }
-    return this.products;
-  }
-
-  getProductsById(id) {
-    this.getProducts();
-    const product = this.products.find((p) => p.id === id);
-    if (product === undefined) {
-      console.log(`El producto con el id ${id} no existe`);
-    } else return product;
-  }
-
-  setId() {
-    this.lastId = this.getLastProductId();
-    if (this.lastId === 0) this.lastId = 1;
-    else this.lastId++;
-    return this.lastId;
-  }
-  getLastProductId() {
-    if (this.products.length === 0) return 0;
-    const lastProductId = this.products[this.products.length - 1].id;
-    console.log("Mi último Id es", this.lastProductId);
-    return lastProductId;
-  }
-  updateProduct(id, productActualizado) {
-    this.getProducts();
-    const existingProduct = this.products.find((product) => product.id === id);
-
-    if (existingProduct === undefined) {
-      console.error(`El id ${id} no existe`);
-      return;
-    }
-    const indice = this.products.findIndex((product) => product.id === id);
-    this.products[indice] = { id, ...productActualizado };
-
-    try {
-      fs.writeFile(this.path, JSON.stringify(this.products));
-      console.log("Archivo actualizado con éxito");
-    } catch (error) {
-      console.error("No se ha podido actualizar el archivo", error);
+      console.error("No se pudo guardar el producto", error);
+      throw error;
     }
   }
 
   deleteProduct(id) {
     this.getProducts();
-    if (this.products.find((product) => product.id) === undefined) {
-      console.error(`El id ${id} no existe`);
-      return;
+    const productId = this.products.find((product) => product.id === id);
+    if (productId) {
+      const Index = this.products.findIndex((product) => product.id === id);
+      this.products.splice(Index, 1);
+      try {
+        fs.writeFileSync(this.path, JSON.stringify(this.products));
+        console.log("Producto eliminado");
+      } catch (error) {
+        console.error("No se pudo eliminar el producto", error);
+      }
+    } else {
+      console.log("No se encontro el producto");
     }
+  }
 
-    const indice = this.products.findIndex((product) => product.id === id);
-    this.products.splice(indice, 1);
-    try {
-      fs.writeFileSync(this.path, JSON.stringify(this.products));
-      console.log("El producto ha sido borrado");
-    } catch (error) {
-      console.error("Error borrando el producto", error);
+  updateProduct(id, productUpdate) {
+    this.getProducts();
+    const productId = this.products.find((product) => product.id === id);
+    if (productId) {
+      const Index = this.products.findIndex((product) => product.id === id);
+      this.products[Index] = { id, ...productUpdate };
+      try {
+        fs.writeFileSync(this.path, JSON.stringify(this.products));
+        console.log("Se actualizo el archivo");
+      } catch (error) {
+        console.error("No se pudo actualizar", error);
+      }
+    } else {
+      console.log("No se encontro el producto");
     }
   }
 }
-
-const productManager = new ProductManager();
-
-const newProduct = {
-  title: "title",
-  description: "description",
-  price: "price",
-  thumbnail: "thumbnail",
-  code: "code",
-  stock: "stock",
-  quantity: "quantity",
-  category: "category",
-  status: "status",
-};
-
-productManager.addProduct(newProduct);
